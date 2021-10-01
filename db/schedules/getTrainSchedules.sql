@@ -1,5 +1,6 @@
 SELECT 
-   *
+   at.arrival_time,
+   st.name
 FROM 
     stations as st, 
     arrival_times as at

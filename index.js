@@ -35,11 +35,4 @@ app.post(`/add_new_schedule`,
     // query('arrival_time').not().isEmpty().trim().escape(),
         ScheduleController.addNewSchedule);
 
-app.post('/get_next_trains', (req, res) => {
-    //params - time value
-    //get next time multiple trains will arrive at the same minute after param.
-    //assume all trains have same schedule every day
-    //if no remaining, should return next time multiples are available.
-    //if no instances, return no time.
-    res.send('get next trains');
-});
+app.post('/get_next_trains', ScheduleController.getNextTrains);

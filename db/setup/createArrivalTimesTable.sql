@@ -3,5 +3,5 @@ create table arrival_times (
 	id serial primary key,
 	station_id int,
 	foreign key (station_id) references stations(id),
-	arrival_time TIME
+	arrival_time varchar(8)
 	);
