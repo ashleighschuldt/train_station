@@ -1,4 +1,5 @@
 module.exports = {
+    // notes - should probably move the string formatting for times into their own service functions.
     getTrainSchedules: (req, res) => {
         const db = req.app.get('db');
         db.schedules.getTrainSchedules({})
@@ -14,7 +15,6 @@ module.exports = {
         let name = req.query.name ? req.query.name : '';
         let arrival_time = req.query.arrival_time ? req.query.arrival_time : '';
 
-        //verify name and arrival time exist
         if (!name || !arrival_time){
             return res.status(400).send('Invalid Station Name or arrival times.');
         }
@@ -117,18 +117,29 @@ module.exports = {
             });
             let trains = [];
             for (let i = 0; i < next_trains.length; i++){
-	            if (next_trains[i].arrival == next_trains[i++].arrival){
-    	            trains.push(next_trains[i]);
-    	            trains.push(next_trains[i++]);
+	            if (i < next_trains.length -1){
+                    if (next_trains[i].arrival == next_trains[i++].arrival){
+                        trains.push(next_trains[i-1]);
+                        trains.push(next_trains[i]);
+                    }
                 }
             }
 
             if (trains.length >= 2){
                 trains = trains.slice(0,2);
-                // Need to format the time back to HH:MM AM/PM
+                trains.map(train => {
+                    let hours = train.arrival.substring(0,2);
+                    let minutes = train.arrival.substring(3,5);
+                    let meridiem = ' AM';
+                    if (hours > 12){
+                        hours = hours - 12;
+                        meridiem = ' PM';
+                    }
+                    train.arrival = hours+':'+minutes+meridiem;
+                });
                 return res.status(200).send(trains);
             } else if (trains.length == 0){
-
+                //return the next time in the AM.
             } else {
                 return res.status(200).send('No Time');
             }
