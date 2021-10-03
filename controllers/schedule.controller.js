@@ -1,4 +1,4 @@
-const { convert_time_to_number, convert_time_to_text, convert_text_to_time } = require('../services/time.services');
+const { convert_time_to_number, convert_time_to_text, convert_text_to_time, validate_time } = require('../services/time.services');
 
 module.exports = {
     getTrainSchedules: (req, res) => {
@@ -24,7 +24,10 @@ module.exports = {
         if (!regex.test(name)){
             return res.status(400).send('Invalid Train Name');
         }
-
+        let valid_arrival_time = validate_time(arrival_time);
+        if (!valid_arrival_time){
+            return res.status(400).send('Invalid arrival time');
+        }
         // //verify train exists in db.
         db.schedules.getTrainIdByName({
             trainName: name
@@ -66,9 +69,10 @@ module.exports = {
     getNextTrains: async (req, res) => {
         //Needs a time value
         let time = req.query.time ? req.query.time : '';
+        let valid_time = validate_time(time);
 
-        if (time === ''){
-            return res.status(400).send('Please enter a time.');
+        if (time === '' || !valid_time){
+            return res.status(400).send('Please enter a valid time.');
         }
 
         time = convert_time_to_number(time);

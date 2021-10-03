@@ -50,5 +50,41 @@ function convert_text_to_time (time){
     }
     return time;
 }
+function validate_time(time){
+    let valid_hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    let valid_minutes = [];
+    let valid_meridiem = ['AM', 'PM'];
 
-module.exports = { convert_time_to_number, convert_time_to_text, convert_text_to_time };
+    for (let i = 0; i < 60; i++){
+        if (i < 10){
+            i = '0'+i;
+        }
+        valid_minutes.push(i);
+    }
+    if (!time.includes(':')){
+        return false;
+    }
+    time = time.replace(':', '');
+    if (time.length < 6){
+        time =  "0" + time;
+    }
+
+    let hours = time.substring(0,2);
+    let minutes = time.substring(2,4);
+    let meridiem = time.substring(4,6);
+
+    if (!valid_hours.includes(hours)){
+        return false;
+    }
+    
+    if (!valid_minutes.includes(minutes)){
+        return false;
+    }
+    if (!valid_meridiem.includes(meridiem)){
+        return false;
+    }
+
+    return true;
+}
+
+module.exports = { convert_time_to_number, convert_time_to_text, convert_text_to_time, validate_time };
