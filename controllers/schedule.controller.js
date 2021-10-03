@@ -71,7 +71,7 @@ module.exports = {
             if (errors.length > 0){
                 return res.status(400).send('Errors');
             }
-            return res.status(200).json(inserted);
+            return res.status(200).send('OK');
         }).catch(err => {
             res.send(400).send(err);
         });

@@ -34,4 +34,4 @@ app.post(`/add_new_schedule`,
     query('arrival_time').not().isEmpty().trim().escape(),
         ScheduleController.addNewSchedule);
 
-app.post('/get_next_trains', ScheduleController.getNextTrains);
+app.get('/get_next_trains', ScheduleController.getNextTrains);
