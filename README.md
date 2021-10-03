@@ -5,7 +5,7 @@ Purpose of this repo is to create an API using Node/Express. Premise is that thi
 ## Endpoints:
 - [GET /get_train_schedules] 
 - [POST /add_new_schedule ]
-- [POST /get_next_trains ]
+- [GET /get_next_trains ]
 
 ### GET /get_train_schedules
 -This endpoint returns all the available train schedules.
