@@ -62,7 +62,7 @@ module.exports = {
                     trainId: train_id,
                     arrivalTime: times[i]
                 }).then(() => {
-                    inserted = inserted++;
+                    inserted = inserted+1;
                 })
                 .catch(err => {
                     errors.push(err);
@@ -102,44 +102,51 @@ module.exports = {
             hours = hours.toString();
             time = hours+minutes+'00';
         }
-
         const db = req.app.get('db');
         db.schedules.getTrainSchedules({})
         .then( schedules => {
             let next_trains = [];
-
             schedules.map(schedule => {
-               if (schedule.arrival_time > time){
+                let arrival_time = schedule.arrival_time.replace(/:/g, '');
+
+                if (arrival_time > time){
                    next_trains.push({arrival: schedule.arrival_time, train: schedule.name });
                }
             });
             let trains = [];
-            for (let i = 0; i < next_trains.length; i++){
-	            if (i < next_trains.length -1){
-                    if (next_trains[i].arrival == next_trains[i++].arrival){
-                        trains.push(next_trains[i-1]);
-                        trains.push(next_trains[i]);
+            if (next_trains.length < 2){
+                for (let i = 0; i < schedules.length - 1; i++){
+                        if (schedules[i].arrival_time === schedules[i+1].arrival_time){
+                            trains.push(schedules[i]);
+                            trains.push(schedules[i+1]);
+                        }
+                        if (trains.length == 2){
+                            return res.status(200).send(trains);
+                        }
                     }
-                }
-            }
-
-            if (trains.length >= 2){
-                trains = trains.slice(0,2);
-                trains.map(train => {
-                    let hours = train.arrival.substring(0,2);
-                    let minutes = train.arrival.substring(3,5);
-                    let meridiem = ' AM';
-                    if (hours > 12){
-                        hours = hours - 12;
-                        meridiem = ' PM';
-                    }
-                    train.arrival = hours+':'+minutes+meridiem;
-                });
-                return res.status(200).send(trains);
-            } else if (trains.length == 0){
-                //return the next time in the AM.
+                    return res.status(200).send('No Time');
             } else {
-                return res.status(200).send('No Time');
+                for (let i = 0; i < next_trains.length - 1; i++){
+                        if (next_trains[i].arrival === next_trains[i+1].arrival){
+                            trains.push(next_trains[i]);
+                            trains.push(next_trains[i+1]);
+                        }
+                }
+    
+                if (trains.length >= 2){
+                    trains = trains.slice(0,2);
+                    trains.map(train => {
+                        let hours = train.arrival.substring(0,2);
+                        let minutes = train.arrival.substring(3,5);
+                        let meridiem = ' AM';
+                        if (hours > 12){
+                            hours = hours - 12;
+                            meridiem = ' PM';
+                        }
+                        train.arrival = hours+':'+minutes+meridiem;
+                    });
+                    return res.status(200).send(trains);
+                }
             }
         })
         .catch(err => {
