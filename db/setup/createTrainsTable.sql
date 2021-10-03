@@ -1,5 +1,5 @@
 -- Included to demonstrate db schema
-create table stations (
+create table trains (
 	id serial primary key,
 	name varchar(4)
 );

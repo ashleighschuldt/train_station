@@ -1,1 +1,1 @@
-INSERT INTO arrival_times (station_id, arrival_time) VALUES (${stationId}, ${arrivalTime});
+INSERT INTO arrival_times (train_id, arrival_time) VALUES (${trainId}, ${arrivalTime});

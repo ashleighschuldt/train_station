@@ -2,6 +2,6 @@ SELECT
    at.arrival_time,
    st.name
 FROM 
-    stations as st, 
+    trains as st, 
     arrival_times as at
-WHERE st.id = at.station_id;
+WHERE st.id = at.train_id;

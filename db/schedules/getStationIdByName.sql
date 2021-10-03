@@ -1,6 +1,6 @@
 SELECT
     id
 FROM 
-    stations
+    trains
 WHERE
-    name = ${stationName};
+    name = ${trainName};
