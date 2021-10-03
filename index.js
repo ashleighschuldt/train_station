@@ -28,11 +28,10 @@ app.listen(PORT, () => {
 });
 
 // End Points - normally these would be broken out in their own routes file.
-
 app.get('/get_train_schedules', ScheduleController.getTrainSchedules);
 app.post(`/add_new_schedule`, 
-    // query('name').not().isEmpty().trim().escape(),
-    // query('arrival_time').not().isEmpty().trim().escape(),
+    query('name').not().isEmpty().trim().escape(),
+    query('arrival_time').not().isEmpty().trim().escape(),
         ScheduleController.addNewSchedule);
 
 app.post('/get_next_trains', ScheduleController.getNextTrains);
