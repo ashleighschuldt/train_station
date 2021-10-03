@@ -3,4 +3,4 @@ SELECT
 FROM 
     trains
 WHERE
-    name = ${trainName};
+    name = ${trainName} LIMIT 1 ;
