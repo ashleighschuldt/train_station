@@ -1,7 +1,6 @@
-const async = require('async');
+const { convert_time_to_number, convert_time_to_text, convert_text_to_time } = require('../services/time.services');
 
 module.exports = {
-    // notes - should probably move the string formatting for times into their own service functions.
     getTrainSchedules: (req, res) => {
         const db = req.app.get('db');
         db.schedules.getTrainSchedules({})
@@ -39,21 +38,8 @@ module.exports = {
             let arrival_times = arrival_time.split(',');
 
             arrival_times.map(time => {
-                time = time.replace(':', '');
-                if (time.length < 6){
-                    time =  "0" + time;
-                }
-
-                let hours = time.substring(0,2);
-                let minutes = time.substring(2,4);
-                let meridiem = time.substring(4,6);
-            
-                if (meridiem === 'AM'){
-                    times.push(hours+':'+minutes+':00');
-                } else {
-                    hours = parseInt(hours)+12;
-                    times.push(hours+':'+minutes+':00');
-                }
+                time = convert_text_to_time(time);
+                times.push(time);
             });
             let inserted = 0;
             let errors = [];
@@ -85,23 +71,8 @@ module.exports = {
             return res.status(400).send('Please enter a time.');
         }
 
-        time = time.replace(':', '');
-        if (time.length < 6){
-            time =  "0" + time;
-        }
+        time = convert_time_to_number(time);
 
-      
-        let hours = time.substring(0,2);
-        let minutes = time.substring(2,4);
-        let meridiem = time.substring(4,6);
-      
-        if (meridiem === 'AM'){
-            time = hours+minutes+'00';
-        } else {
-            hours = parseInt(hours)+12;
-            hours = hours.toString();
-            time = hours+minutes+'00';
-        }
         const db = req.app.get('db');
         db.schedules.getTrainSchedules({})
         .then( schedules => {
@@ -117,6 +88,8 @@ module.exports = {
             if (next_trains.length < 2){
                 for (let i = 0; i < schedules.length - 1; i++){
                         if (schedules[i].arrival_time === schedules[i+1].arrival_time){
+                            schedules[i].arrival_time = convert_time_to_text(schedules[i].arrival_time);
+                            schedules[i+1].arrival_time = convert_time_to_text(schedules[i+1].arrival_time);
                             trains.push(schedules[i]);
                             trains.push(schedules[i+1]);
                         }
@@ -128,25 +101,16 @@ module.exports = {
             } else {
                 for (let i = 0; i < next_trains.length - 1; i++){
                         if (next_trains[i].arrival === next_trains[i+1].arrival){
+                            next_trains[i].arrival = convert_time_to_text(next_trains[i].arrival);
+                            next_trains[i+1].arrival = convert_time_to_text(next_trains[i+1].arrival);
                             trains.push(next_trains[i]);
                             trains.push(next_trains[i+1]);
                         }
                 }
-    
                 if (trains.length >= 2){
                     trains = trains.slice(0,2);
-                    trains.map(train => {
-                        let hours = train.arrival.substring(0,2);
-                        let minutes = train.arrival.substring(3,5);
-                        let meridiem = ' AM';
-                        if (hours > 12){
-                            hours = hours - 12;
-                            meridiem = ' PM';
-                        }
-                        train.arrival = hours+':'+minutes+meridiem;
-                    });
-                    return res.status(200).send(trains);
                 }
+                return res.status(200).send(trains);
             }
         })
         .catch(err => {

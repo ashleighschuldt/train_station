@@ -15,31 +15,31 @@ Response Example:
 [
     {
         "arrival_time": "08:00:00",
-        "name": "Thomas"
+        "name": "Thom"
     },
     {
         "arrival_time": "09:00:00",
-        "name": "Henry"
+        "name": "Henr"
     },
     {
         "arrival_time": "09:00:00",
-        "name": "Thomas"
+        "name": "Thom"
     },
     {
         "arrival_time": "10:00:00",
-        "name": "Thomas"
+        "name": "Thom"
     },
     {
         "arrival_time": "21:53:00",
-        "name": "Henry"
+        "name": "Henr"
     },
     {
         "arrival_time": "22:00:00",
-        "name": "Henry"
+        "name": "Henr"
     },
     {
         "arrival_time": "22:00:00",
-        "name": "Thomas"
+        "name": "Thom"
     }
 ]
 
@@ -73,11 +73,11 @@ Response Example:
 
 [
     {
-        "arrival_time": "09:00:00",
-        "name": "test"
+        "arrival_time": "09:00 AM",
+        "name": "Henr"
     },
     {
-        "arrival_time": "09:00:00",
-        "name": "tomo"
+        "arrival_time": "09:00 AM",
+        "name": "Thom"
     }
 ]
