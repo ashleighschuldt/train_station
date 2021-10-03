@@ -1,3 +1,5 @@
+const async = require('async');
+
 module.exports = {
     // notes - should probably move the string formatting for times into their own service functions.
     getTrainSchedules: (req, res) => {
@@ -23,8 +25,8 @@ module.exports = {
         if (!regex.test(name)){
             return res.status(400).send('Invalid Train Name');
         }
-        
-        //verify train exists in db.
+
+        // //verify train exists in db.
         db.schedules.getTrainIdByName({
             trainName: name
         }).then( train_id => {
@@ -32,7 +34,7 @@ module.exports = {
                 return res.status(400).send('Train is not available at this station.');
             }
             train_id = train_id[0].id;
-            
+
             let times = [];
             let arrival_times = arrival_time.split(',');
 
@@ -52,26 +54,24 @@ module.exports = {
                     hours = parseInt(hours)+12;
                     times.push(hours+':'+minutes+':00');
                 }
-
-                let arrival_times_by_id = [];
-                let errors = [];
-                for (let i = 0; i < times.length; i++){
-                    db.schedules.AddTrainSchedule({
-                        trainId: train_id,
-                        arrivalTime: times[i]
-                    })
-                    .then( inserted => {
-                        arrival_times_by_id.push(inserted);
-                    })
-                    .catch(err => {
-                        errors.push(err);
-                    });
-                }
-                if (errors.length > 0){
-                    return res.status(400).send('Errors');
-                }
-                return res.status(200).send(arrival_times_by_id);
             });
+            let inserted = 0;
+            let errors = [];
+            for (let i = 0; i < times.length; i++){
+                db.schedules.AddTrainSchedule({
+                    trainId: train_id,
+                    arrivalTime: times[i]
+                }).then(() => {
+                    inserted = inserted++;
+                })
+                .catch(err => {
+                    errors.push(err);
+                });
+            }
+            if (errors.length > 0){
+                return res.status(400).send('Errors');
+            }
+            return res.status(200).json(inserted);
         }).catch(err => {
             res.send(400).send(err);
         });
