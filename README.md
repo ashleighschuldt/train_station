@@ -2,6 +2,12 @@
 
 Purpose of this repo is to create an API using Node/Express. Premise is that this API is for a particular train station. You can get the train schedules and add a list of schedules to a train.
 
+## Setup
+
+You should be able to clone the repo, run npm install. You will need to setup a sql(Postgres) db and add your connection string to your .env file as `DATABASE_URL`. The create table statements are in the db/setup folder. From here you can run npm start to get the server up and running.
+
+You can then use Postman to test all the endpoints.
+
 ## Endpoints:
 - [GET /get_train_schedules] 
 - [POST /add_new_schedule ]
