@@ -4,7 +4,7 @@ Purpose of this repo is to create an API using Node/Express. Premise is that thi
 
 ## Setup
 
-You should be able to clone the repo, run npm install. You will need to setup a sql(Postgres) db and add your connection string to your .env file as `DATABASE_URL`. The create table statements are in the db/setup folder. From here you can run npm start to get the server up and running.
+Clone/fork the repo, run npm install. You will need to setup a sql(Postgres) db and add your connection string to your .env file as `DATABASE_URL`. The create table statements are in the db/setup folder. From here you can run npm start to get the server up and running.
 
 You can then use Postman to test all the endpoints.
 
