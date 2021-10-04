@@ -1,7 +1,7 @@
 const chai = require('chai');
 const assert = chai.assert;
 
-describe('Array', function(){
+describe('Time Entered', function(){
     it('should be a string', function(){
         let string = '9:53PM';
         assert.typeOf(string, 'string');
