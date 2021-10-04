@@ -60,7 +60,7 @@ Query Params:
 -must be an alphanumeric string with a maximum of 4 characters.
 #### arrival_time
 - arrival time is the schedule a client wants to add to the train line.
-- use a comma seperated string for multiple times (i.e. 8:00AM,9:00AM,10:00PM)
+- use a comma seperated string for multiple times `8:00AM,9:00AM,10:00PM`
 
 Returns 200 response on success and 400, 500 etc on errors.
 
@@ -73,7 +73,7 @@ http://localhost:8080/get_next_trains?time=11:58PM
 Query Params:
 #### time
 -time to get trains after
-- string (i.e. 9:53PM)
+- string `9:53PM`
 
 Response Example:
 
