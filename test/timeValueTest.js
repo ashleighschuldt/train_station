@@ -20,7 +20,8 @@ describe('Time Entered', function(){
     it('should be a maximum of 7 characters', function(){
         let time = "9:53PM";
         assert.isAtMost(time.length, 7);
-    })
+    });
+    
     it('should have valid minutes', function(){
         let time = "9:53PM";
         
