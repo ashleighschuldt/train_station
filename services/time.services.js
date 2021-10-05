@@ -64,20 +64,23 @@ function validate_time(time){
     if (!time.includes(':')){
         return false;
     }
-    time = time.replace(':', '');
+    //need to add a check for list of strings.
+
+
+    time = time.replace(/:/g, '');
     if (time.length < 6){
         time =  "0" + time;
     }
 
     let hours = time.substring(0,2);
-    let minutes = time.substring(2,4);
+    let minutes = parseInt(time.substring(2,4));
     let meridiem = time.substring(4,6);
 
     if (!valid_hours.includes(hours)){
         return false;
     }
     
-    if (!valid_minutes.includes(minutes)){
+    if (minutes >= 60){
         return false;
     }
     if (!valid_meridiem.includes(meridiem)){

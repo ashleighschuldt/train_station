@@ -24,10 +24,6 @@ module.exports = {
         if (!regex.test(name)){
             return res.status(400).send('Invalid Train Name');
         }
-        let valid_arrival_time = validate_time(arrival_time);
-        if (!valid_arrival_time){
-            return res.status(400).send('Invalid arrival time');
-        }
         // //verify train exists in db.
         db.schedules.getTrainIdByName({
             trainName: name
