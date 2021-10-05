@@ -50,6 +50,20 @@ function convert_text_to_time (time){
     }
     return time;
 }
+function check_list_or_single(time){
+    if (time.includes(',')){
+        let times = time.split(',');
+        for (let i = 0; i < times.length; i++){
+            if (!validate_time(times[i])){
+                return false;
+            }
+        }
+        return true;
+    } else {
+        return validate_time(time);
+    }
+}
+
 function validate_time(time){
     let valid_hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     let valid_minutes = [];
@@ -64,9 +78,7 @@ function validate_time(time){
     if (!time.includes(':')){
         return false;
     }
-    //need to add a check for list of strings.
-
-
+    
     time = time.replace(/:/g, '');
     if (time.length < 6){
         time =  "0" + time;
@@ -77,17 +89,20 @@ function validate_time(time){
     let meridiem = time.substring(4,6);
 
     if (!valid_hours.includes(hours)){
+        console.log('hrs')
         return false;
     }
     
     if (minutes >= 60){
+        console.log('minutes')
         return false;
     }
     if (!valid_meridiem.includes(meridiem)){
+        console.log('meri')
         return false;
     }
 
     return true;
 }
 
-module.exports = { convert_time_to_number, convert_time_to_text, convert_text_to_time, validate_time };
+module.exports = { convert_time_to_number, convert_time_to_text, convert_text_to_time, validate_time, check_list_or_single };
