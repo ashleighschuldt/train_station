@@ -90,3 +90,19 @@ Response Example:
         "name": "Thom"
     }
 ]
+
+### Key Value Store
+Setup a mock key value store even though I actually used sql for the api. 
+-Mockup is dbStore/keyValueDB.js file
+-db.set(), db.fetch(), db.keys() functions are in the dbStore directory
+
+#### db.set()
+-run `node dbStore/dbSet.js`
+
+#### db.fetch()
+-run `node dbStore/dbFetch.js`
+
+#### db.keys()
+-run `node dbStore\dbKeys.js`
+
+-Queries are located in the db/store folder since the functions are technically pulling sql queries and just formatting as if it was a key value db.
