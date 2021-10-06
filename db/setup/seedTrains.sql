@@ -1,0 +1,1 @@
+insert into trains (name) values ('test', 'thom');
