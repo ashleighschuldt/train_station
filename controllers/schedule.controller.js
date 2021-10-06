@@ -100,10 +100,10 @@ module.exports = {
                 }
             }
 
-             if (trains.length >= 2){
+            if (trains.length >= 2){
                 trains = trains.slice(0,2);
                 return res.status(200).send(trains);
-             } else {
+            } else {
                 for (let i = 0; i < schedules.length - 1; i++){
                     if (schedules[i].arrival_time === schedules[i+1].arrival_time){
                         schedules[i].arrival_time = convert_time_to_text(schedules[i].arrival_time);
