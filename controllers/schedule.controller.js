@@ -111,13 +111,12 @@ module.exports = {
                         trains.push(schedules[i]);
                         trains.push(schedules[i+1]);
                     }
+
+                    if (trains.length === 2){
+                        return res.status(200).send(trains);
+                    }
                 }
-                if (trains.length >= 2){
-                    trains = trains.slice(0,2);
-                    return res.status(200).send(trains);
-                } else {
-                    return res.status(200).send('No Time');
-                }
+                return res.status(200).send('No Time');
             }           
             
         })
