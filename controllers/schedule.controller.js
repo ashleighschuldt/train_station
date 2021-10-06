@@ -39,7 +39,6 @@ module.exports = {
 
             let times = [];
             let arrival_times = arrival_time.split(',');
-
             arrival_times.map(time => {
                 time = convert_text_to_time(time);
                 times.push(time);
@@ -83,7 +82,6 @@ module.exports = {
             let next_trains = [];
             schedules.map(schedule => {
                 let arrival_time = schedule.arrival_time.replace(/:/g, '');
-
                 if (arrival_time > time){
                    next_trains.push({arrival: schedule.arrival_time, train: schedule.name });
                }

@@ -9,10 +9,11 @@ function convert_time_to_number (time){
     let meridiem = time.substring(4,6);
 
     if (meridiem === 'AM'){
+        if (hours == 12){
+            hours = '00';
+        }
         time = hours+minutes+'00';
     } else {
-        hours = parseInt(hours)+12;
-        hours = hours.toString();
         time = hours+minutes+'00';
     }
 
@@ -27,28 +28,30 @@ function convert_time_to_text (time){
         hours = hours - 12;
         meridiem = ' PM';
     }
+    if (hours == '00'){
+        hours = 12;
+    }
     time = hours+':'+minutes+meridiem;
 
     return time;
 }
 
 function convert_text_to_time (time){
-    time = time.replace(':', '');
+    time = time.replace(/:/g, '');
     if (time.length < 6){
         time =  "0" + time;
     }
-
     let hours = time.substring(0,2);
     let minutes = time.substring(2,4);
     let meridiem = time.substring(4,6);
-
-    if (meridiem === 'AM'){
-        time = hours+':'+minutes+':00';
-    } else {
+    if (meridiem === 'AM' && hours == '12'){
+        hours = '00';
+    } else if (meridiam === 'PM'){
         hours = parseInt(hours)+12;
-        time = hours+':'+minutes+':00';
     }
-    return time;
+    
+    return hours+':'+minutes+':00';
+    
 }
 function check_list_or_single(time){
     if (time.includes(',')){
@@ -89,16 +92,13 @@ function validate_time(time){
     let meridiem = time.substring(4,6);
 
     if (!valid_hours.includes(hours)){
-        console.log('hrs')
         return false;
     }
     
     if (minutes >= 60){
-        console.log('minutes')
         return false;
     }
     if (!valid_meridiem.includes(meridiem)){
-        console.log('meri')
         return false;
     }
 
