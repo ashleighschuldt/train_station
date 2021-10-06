@@ -91,16 +91,19 @@ module.exports = {
             //honestly these loops could probably be turned into a service... 
             // they do the same thing just with different initial data sets..
             // need to consider edge case of only 2 items returned..
-            if (next_trains.length > 2){
-                for (let i = 0; i < next_trains.length - 1; i++){
-                    if (next_trains[i].arrival === next_trains[i+1].arrival){
-                        next_trains[i].arrival = convert_time_to_text(next_trains[i].arrival);
-                        next_trains[i+1].arrival = convert_time_to_text(next_trains[i+1].arrival);
-                        trains.push(next_trains[i]);
-                        trains.push(next_trains[i+1]);
-                    }
+            for (let i = 0; i < next_trains.length - 1; i++){
+                if (next_trains[i].arrival === next_trains[i+1].arrival){
+                    next_trains[i].arrival = convert_time_to_text(next_trains[i].arrival);
+                    next_trains[i+1].arrival = convert_time_to_text(next_trains[i+1].arrival);
+                    trains.push(next_trains[i]);
+                    trains.push(next_trains[i+1]);
                 }
-            } else {
+            }
+
+             if (trains.length >= 2){
+                trains = trains.slice(0,2);
+                return res.status(200).send(trains);
+             } else {
                 for (let i = 0; i < schedules.length - 1; i++){
                     if (schedules[i].arrival_time === schedules[i+1].arrival_time){
                         schedules[i].arrival_time = convert_time_to_text(schedules[i].arrival_time);
@@ -109,14 +112,14 @@ module.exports = {
                         trains.push(schedules[i+1]);
                     }
                 }
-            }
-           
-            if (trains.length >= 2){
-                trains = trains.slice(0,2);
-                return res.status(200).send(trains);
-            } else {
-                return res.status(200).send('No Time');
-            }
+                if (trains.length >= 2){
+                    trains = trains.slice(0,2);
+                    return res.status(200).send(trains);
+                } else {
+                    return res.status(200).send('No Time');
+                }
+            }           
+            
         })
         .catch(err => {
             res.status(400).send(err);
