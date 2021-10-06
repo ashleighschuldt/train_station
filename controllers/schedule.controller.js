@@ -88,6 +88,9 @@ module.exports = {
             });
           
             let trains = [];
+            //honestly these loops could probably be turned into a service... 
+            // they do the same thing just with different initial data sets..
+            // need to consider edge case of only 2 items returned..
             if (next_trains.length > 2){
                 for (let i = 0; i < next_trains.length - 1; i++){
                     if (next_trains[i].arrival === next_trains[i+1].arrival){
