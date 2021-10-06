@@ -12,12 +12,10 @@ function convert_time_to_number (time){
         if (hours == 12){
             hours = '00';
         }
-        time = hours+minutes+'00';
     } else {
-        time = hours+minutes+'00';
+        hours = parseInt(hours)+12;
     }
-
-    return time;
+    return hours+minutes+'00';
 }
 
 function convert_time_to_text (time){
@@ -69,15 +67,8 @@ function check_list_or_single(time){
 
 function validate_time(time){
     let valid_hours = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-    let valid_minutes = [];
     let valid_meridiem = ['AM', 'PM'];
 
-    for (let i = 0; i < 60; i++){
-        if (i < 10){
-            i = '0'+i;
-        }
-        valid_minutes.push(i);
-    }
     if (!time.includes(':')){
         return false;
     }

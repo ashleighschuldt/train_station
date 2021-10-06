@@ -66,7 +66,6 @@ module.exports = {
     },
 
     getNextTrains: async (req, res) => {
-        //Needs a time value
         let time = req.query.time ? req.query.time : '';
         let valid_time = validate_time(time);
 
@@ -80,39 +79,40 @@ module.exports = {
         db.schedules.getTrainSchedules({})
         .then( schedules => {
             let next_trains = [];
+
             schedules.map(schedule => {
                 let arrival_time = schedule.arrival_time.replace(/:/g, '');
                 if (arrival_time > time){
                    next_trains.push({arrival: schedule.arrival_time, train: schedule.name });
                }
             });
+          
             let trains = [];
-            if (next_trains.length < 2){
-                for (let i = 0; i < schedules.length - 1; i++){
-                        if (schedules[i].arrival_time === schedules[i+1].arrival_time){
-                            schedules[i].arrival_time = convert_time_to_text(schedules[i].arrival_time);
-                            schedules[i+1].arrival_time = convert_time_to_text(schedules[i+1].arrival_time);
-                            trains.push(schedules[i]);
-                            trains.push(schedules[i+1]);
-                        }
-                        if (trains.length == 2){
-                            return res.status(200).send(trains);
-                        }
-                    }
-                    return res.status(200).send('No Time');
-            } else {
+            if (next_trains.length > 2){
                 for (let i = 0; i < next_trains.length - 1; i++){
-                        if (next_trains[i].arrival === next_trains[i+1].arrival){
-                            next_trains[i].arrival = convert_time_to_text(next_trains[i].arrival);
-                            next_trains[i+1].arrival = convert_time_to_text(next_trains[i+1].arrival);
-                            trains.push(next_trains[i]);
-                            trains.push(next_trains[i+1]);
-                        }
+                    if (next_trains[i].arrival === next_trains[i+1].arrival){
+                        next_trains[i].arrival = convert_time_to_text(next_trains[i].arrival);
+                        next_trains[i+1].arrival = convert_time_to_text(next_trains[i+1].arrival);
+                        trains.push(next_trains[i]);
+                        trains.push(next_trains[i+1]);
+                    }
                 }
-                if (trains.length >= 2){
-                    trains = trains.slice(0,2);
+            } else {
+                for (let i = 0; i < schedules.length - 1; i++){
+                    if (schedules[i].arrival_time === schedules[i+1].arrival_time){
+                        schedules[i].arrival_time = convert_time_to_text(schedules[i].arrival_time);
+                        schedules[i+1].arrival_time = convert_time_to_text(schedules[i+1].arrival_time);
+                        trains.push(schedules[i]);
+                        trains.push(schedules[i+1]);
+                    }
                 }
+            }
+           
+            if (trains.length >= 2){
+                trains = trains.slice(0,2);
                 return res.status(200).send(trains);
+            } else {
+                return res.status(200).send('No Time');
             }
         })
         .catch(err => {
